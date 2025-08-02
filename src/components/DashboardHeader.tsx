@@ -79,15 +79,15 @@ export const DashboardHeader = () => {
             <p className="text-xs text-muted-foreground">Network</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-cyber font-orbitron">Epoch 7</p>
+            <p className="text-lg font-bold text-cyber font-orbitron">Epoch 2</p>
             <p className="text-xs text-muted-foreground">Current</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-neon font-orbitron">259.19%</p>
-            <p className="text-xs text-muted-foreground">Live APY</p>
+            <p className="text-lg font-bold text-neon font-orbitron">12.6%</p>
+            <p className="text-xs text-muted-foreground">Daily APY</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-cyber font-orbitron">2d 14h</p>
+            <p className="text-lg font-bold text-cyber font-orbitron">14d 23h</p>
             <p className="text-xs text-muted-foreground">Time Left</p>
           </div>
         </div>

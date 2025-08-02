@@ -18,10 +18,10 @@ interface EpochData {
 
 export const EpochTracker = () => {
   const [epochData, setEpochData] = useState<EpochData>({
-    currentEpoch: 7,
+    currentEpoch: 2,
     totalEpochs: 11,
-    timeLeft: { days: 2, hours: 14, minutes: 32, seconds: 45 },
-    progressPercentage: 65,
+    timeLeft: { days: 14, hours: 23, minutes: 56, seconds: 45 },
+    progressPercentage: 15,
     epochStartTime: new Date(),
     epochEndTime: new Date()
   });

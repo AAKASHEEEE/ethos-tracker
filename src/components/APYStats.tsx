@@ -14,12 +14,12 @@ interface APYData {
 
 export const APYStats = () => {
   const [apyData, setApyData] = useState<APYData>({
-    currentAPY: 259.19,
-    claimedAIR: 396250.92,
-    totalEarned: 26283.84,
-    pendingRewards: 1847.32,
+    currentAPY: 12.6,
+    claimedAIR: 85566,
+    totalEarned: 2683.84,
+    pendingRewards: 92683,
     volumeMultiplier: 1.25,
-    nextResetIn: '2d 14h'
+    nextResetIn: '14d 23h'
   });
 
   const [claiming, setClaiming] = useState(false);

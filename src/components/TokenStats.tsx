@@ -16,7 +16,7 @@ export const TokenStats = () => {
     price: 0.00025,
     priceChange24h: 12.5,
     marketCap: 925821,
-    holders: 11,
+    holders: 12823,
     totalTransactions: 1247,
     volume24h: 87432
   });
