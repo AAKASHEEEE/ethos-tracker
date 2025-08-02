@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { Monitor, Wifi, WifiOff, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTokenData } from '@/hooks/useTokenData';
 
 export const DashboardHeader = () => {
   const [isOnline, setIsOnline] = useState(true);
-  const [lastUpdate, setLastUpdate] = useState(new Date());
+  const { lastUpdate, refreshData, tokenData, formatNumber } = useTokenData();
 
   const handleRefresh = () => {
-    setLastUpdate(new Date());
+    refreshData();
     // Trigger data refresh across components
     window.dispatchEvent(new CustomEvent('refreshData'));
   };
@@ -22,7 +23,7 @@ export const DashboardHeader = () => {
         </div>
         <div className="flex items-center gap-2 ml-2">
           <Monitor className="h-4 w-4 text-black" />
-          <h1 className="font-orbitron font-bold text-sm text-black">Ethereum OS Dashboard</h1>
+          <h1 className="font-orbitron font-bold text-sm text-black">Ethereum OS Dashboard - LIVE</h1>
         </div>
       </div>
       
@@ -30,10 +31,10 @@ export const DashboardHeader = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-gradient font-orbitron">
-              $AIR Ecosystem Tracker
+              ${tokenData.symbol} Ecosystem Tracker
             </h1>
             <p className="text-muted-foreground">
-              Real-time DePIN network analytics and rewards dashboard
+              Real-time DePIN network analytics via GeckoTerminal API
             </p>
           </div>
           
@@ -43,7 +44,7 @@ export const DashboardHeader = () => {
               {isOnline ? (
                 <>
                   <Wifi className="h-4 w-4 text-green-400" />
-                  <span className="text-sm font-orbitron text-green-400">ONLINE</span>
+                  <span className="text-sm font-orbitron text-green-400">LIVE API</span>
                 </>
               ) : (
                 <>
@@ -75,7 +76,7 @@ export const DashboardHeader = () => {
         {/* Quick Stats Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-border">
           <div className="text-center">
-            <p className="text-lg font-bold text-neon font-orbitron">Base</p>
+            <p className="text-lg font-bold text-neon font-orbitron">ETH</p>
             <p className="text-xs text-muted-foreground">Network</p>
           </div>
           <div className="text-center">
@@ -83,12 +84,12 @@ export const DashboardHeader = () => {
             <p className="text-xs text-muted-foreground">Current</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-neon font-orbitron">12.6%</p>
-            <p className="text-xs text-muted-foreground">Daily APY</p>
+            <p className="text-lg font-bold text-neon font-orbitron">${tokenData.price.toFixed(6)}</p>
+            <p className="text-xs text-muted-foreground">Live Price</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-cyber font-orbitron">14d 23h</p>
-            <p className="text-xs text-muted-foreground">Time Left</p>
+            <p className="text-lg font-bold text-cyber font-orbitron">{formatNumber(tokenData.volume24h)}</p>
+            <p className="text-xs text-muted-foreground">24h Volume</p>
           </div>
         </div>
       </div>
