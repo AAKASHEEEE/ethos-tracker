@@ -27,6 +27,7 @@ export const EpochTracker = () => {
   });
 
   useEffect(() => {
+    console.log('EpochTracker mounted, starting timer calculations...');
     const calculateTimeLeft = () => {
       // Calculate based on 3-day epochs
       const epochDuration = 3 * 24 * 60 * 60 * 1000; // 3 days in milliseconds
@@ -34,6 +35,8 @@ export const EpochTracker = () => {
       const epochEnd = epochStart + epochDuration;
       const now = Date.now();
       const timeLeft = epochEnd - now;
+      
+      console.log('Time calculation:', { epochDuration, epochStart, epochEnd, now, timeLeft });
 
       if (timeLeft > 0) {
         const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
@@ -77,8 +80,10 @@ export const EpochTracker = () => {
 
   const formatTime = (value: number) => value.toString().padStart(2, '0');
 
+  console.log('EpochTracker rendering with data:', epochData);
+
   return (
-    <div className="retro-window">
+    <div className="retro-window" style={{ minHeight: '400px' }}>
       <div className="window-titlebar">
         <div className="window-controls">
           <div className="window-control control-close"></div>
