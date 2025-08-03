@@ -43,7 +43,7 @@ export const APYStats = () => {
           <div className="window-control control-minimize"></div>
           <div className="window-control control-maximize"></div>
         </div>
-        <h2 className="font-orbitron font-bold text-sm text-black ml-2">APY Stats</h2>
+        <h2 className="font-orbitron font-bold text-sm text-white ml-2">APY Stats</h2>
       </div>
       
       <div className="p-6 space-y-6">

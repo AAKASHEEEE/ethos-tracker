@@ -50,6 +50,22 @@ export const EpochTracker = () => {
           epochStartTime: new Date(epochStart),
           epochEndTime: new Date(epochEnd)
         }));
+      } else {
+        // Epoch ended, move to next epoch
+        setEpochData(prev => {
+          const nextEpoch = prev.currentEpoch < prev.totalEpochs ? prev.currentEpoch + 1 : prev.currentEpoch;
+          const newEpochStart = Date.now();
+          const newEpochEnd = newEpochStart + epochDuration;
+          
+          return {
+            ...prev,
+            currentEpoch: nextEpoch,
+            timeLeft: { days: 3, hours: 0, minutes: 0, seconds: 0 },
+            progressPercentage: 0,
+            epochStartTime: new Date(newEpochStart),
+            epochEndTime: new Date(newEpochEnd)
+          };
+        });
       }
     };
 
@@ -69,7 +85,7 @@ export const EpochTracker = () => {
           <div className="window-control control-minimize"></div>
           <div className="window-control control-maximize"></div>
         </div>
-        <h2 className="font-orbitron font-bold text-sm text-black ml-2">Epoch Tracker</h2>
+        <h2 className="font-orbitron font-bold text-sm text-white ml-2">Epoch Tracker</h2>
       </div>
       
       <div className="p-6 space-y-6">
@@ -77,16 +93,16 @@ export const EpochTracker = () => {
         <Card className="data-panel">
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center gap-2">
-              <Zap className="h-6 w-6 text-neon animate-pulse" />
-              <h3 className="text-3xl font-bold text-gradient font-orbitron">
+              <Zap className="h-6 w-6 text-retro-blue" />
+              <h3 className="text-3xl font-bold text-retro-blue font-orbitron">
                 Epoch {epochData.currentEpoch} of {epochData.totalEpochs}
               </h3>
             </div>
             
             {/* Progress Bar */}
-            <div className="progress-neon h-6">
+            <div className="progress-retro h-6">
               <div 
-                className="progress-fill flex items-center justify-center text-xs font-bold"
+                className="progress-fill flex items-center justify-center text-xs font-bold text-white"
                 style={{ width: `${epochData.progressPercentage}%` }}
               >
                 {epochData.progressPercentage}%
@@ -100,17 +116,17 @@ export const EpochTracker = () => {
         </Card>
 
         {/* Countdown Timer */}
-        <Card className="data-panel animated-bg">
+        <Card className="data-panel">
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <Clock className="h-5 w-5 text-cyber" />
-              <h4 className="text-lg font-semibold text-cyber font-orbitron">Time Remaining</h4>
+              <Clock className="h-5 w-5 text-retro-blue" />
+              <h4 className="text-lg font-semibold text-retro-blue font-orbitron">Time Remaining</h4>
             </div>
             
             <div className="grid grid-cols-4 gap-4">
               <div className="text-center">
-                <div className="bg-gradient-to-br from-primary to-accent rounded-lg p-3 neon-glow">
-                  <p className="text-2xl font-bold font-orbitron text-black">
+                <div className="retro-button p-3">
+                  <p className="text-2xl font-bold font-orbitron text-foreground">
                     {formatTime(epochData.timeLeft.days)}
                   </p>
                 </div>
@@ -118,8 +134,8 @@ export const EpochTracker = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-gradient-to-br from-primary to-accent rounded-lg p-3 neon-glow">
-                  <p className="text-2xl font-bold font-orbitron text-black">
+                <div className="retro-button p-3">
+                  <p className="text-2xl font-bold font-orbitron text-foreground">
                     {formatTime(epochData.timeLeft.hours)}
                   </p>
                 </div>
@@ -127,8 +143,8 @@ export const EpochTracker = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-gradient-to-br from-primary to-accent rounded-lg p-3 neon-glow">
-                  <p className="text-2xl font-bold font-orbitron text-black">
+                <div className="retro-button p-3">
+                  <p className="text-2xl font-bold font-orbitron text-foreground">
                     {formatTime(epochData.timeLeft.minutes)}
                   </p>
                 </div>
@@ -136,8 +152,8 @@ export const EpochTracker = () => {
               </div>
               
               <div className="text-center">
-                <div className="bg-gradient-to-br from-primary to-accent rounded-lg p-3 neon-glow animate-pulse-slow">
-                  <p className="text-2xl font-bold font-orbitron text-black">
+                <div className="retro-button p-3">
+                  <p className="text-2xl font-bold font-orbitron text-foreground">
                     {formatTime(epochData.timeLeft.seconds)}
                   </p>
                 </div>
@@ -151,7 +167,7 @@ export const EpochTracker = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Card className="data-panel">
             <div className="flex items-center gap-2 mb-2">
-              <Calendar className="h-4 w-4 text-accent" />
+              <Calendar className="h-4 w-4 text-retro-blue" />
               <h4 className="font-medium font-orbitron">Epoch Start</h4>
             </div>
             <p className="text-sm text-muted-foreground">
@@ -162,7 +178,7 @@ export const EpochTracker = () => {
           
           <Card className="data-panel">
             <div className="flex items-center gap-2 mb-2">
-              <Calendar className="h-4 w-4 text-accent" />
+              <Calendar className="h-4 w-4 text-retro-blue" />
               <h4 className="font-medium font-orbitron">Epoch End</h4>
             </div>
             <p className="text-sm text-muted-foreground">
@@ -173,9 +189,9 @@ export const EpochTracker = () => {
         </div>
 
         {/* Next Epoch Preview */}
-        <Card className="data-panel bg-gradient-to-r from-secondary/50 to-accent/10 border-accent/30">
+        <Card className="data-panel">
           <div className="text-center space-y-2">
-            <h4 className="font-semibold text-accent font-orbitron">Next: Epoch {epochData.currentEpoch + 1}</h4>
+            <h4 className="font-semibold text-retro-green font-orbitron">Next: Epoch {epochData.currentEpoch + 1}</h4>
             <p className="text-sm text-muted-foreground">
               Estimated rewards distribution in {epochData.timeLeft.days}d {epochData.timeLeft.hours}h
             </p>
