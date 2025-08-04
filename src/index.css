@@ -198,15 +198,4 @@ body {
   50% { opacity: 0.5; }
 }
 
-.data-panel {
-  @apply p-4 rounded-lg border border-border bg-background shadow-md;
-}
-
-.font-orbitron {
-  font-family: 'Orbitron', sans-serif;
-}
-
-.text-accent {
-  color: #00ffff; /* your neon/cyber accent */
-}
 
