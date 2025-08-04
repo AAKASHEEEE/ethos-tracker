@@ -5,15 +5,9 @@ import { APYStats } from "@/components/APYStats";
 import { EtherscanLeaderboard } from "@/components/EtherscanLeaderboard";
 import { DexscreenerWidget } from "@/components/DexscreenerWidget";
 import { SentimentVoting } from "@/components/SentimentVoting";
-import { TokenStats } from '@/components/TokenStats';
 
-export default function IndexPage() {
-  return (
-    <main className="p-8">
-      <TokenStats />
-    </main>
-  );
-}
+
+
 
 
 const Index = () => {
