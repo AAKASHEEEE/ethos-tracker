@@ -2,20 +2,15 @@ import { Card } from '@/components/ui/card';
 import { TrendingUp, TrendingDown, Users, Activity, ExternalLink, Copy } from 'lucide-react';
 import { useTokenData } from '@/hooks/useTokenData';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
 
 export const TokenStats = () => {
   const { tokenData, loading, error, lastUpdate, formatNumber, formatLargeNumber } = useTokenData();
-  const [copied, setCopied] = useState(false);
 
-  const formatAddress = (address: string) => {
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
+  const formatAddress = (address: string) =>
+    `${address.slice(0, 6)}...${address.slice(-4)}`;
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(tokenData.address);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1500);
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
   };
 
   const openPoolOnGecko = () => {
@@ -34,7 +29,9 @@ export const TokenStats = () => {
             <div className="window-control control-minimize"></div>
             <div className="window-control control-maximize"></div>
           </div>
-          <h2 className="font-orbitron font-bold text-sm text-black ml-2">$AIR Token Stats - Error</h2>
+          <h2 className="font-orbitron font-bold text-sm text-black ml-2">
+            $AIR Token Stats - Error
+          </h2>
         </div>
 
         <div className="p-6">
@@ -66,7 +63,7 @@ export const TokenStats = () => {
       </div>
 
       <div className="p-6 space-y-4">
-        {/* Live Status */}
+        {/* LIVE BAR */}
         <Card className="data-panel bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -85,7 +82,7 @@ export const TokenStats = () => {
         </Card>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Price */}
+          {/* Live Price */}
           <Card className="data-panel animated-bg">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-sm font-medium text-muted-foreground font-orbitron">Live Price</h3>
@@ -99,16 +96,8 @@ export const TokenStats = () => {
               <p className="text-2xl font-bold text-neon font-orbitron">
                 {loading ? '...' : `$${tokenData.price.toFixed(8)}`}
               </p>
-              <p
-                className={`text-sm ${
-                  tokenData.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'
-                }`}
-              >
-                {loading
-                  ? '...'
-                  : `${tokenData.priceChange24h >= 0 ? '+' : ''}${tokenData.priceChange24h.toFixed(
-                      2
-                    )}%`}
+              <p className={`text-sm ${tokenData.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                {loading ? '...' : `${tokenData.priceChange24h >= 0 ? '+' : ''}${tokenData.priceChange24h.toFixed(2)}%`}
               </p>
             </div>
           </Card>
@@ -144,9 +133,7 @@ export const TokenStats = () => {
           {/* 24h Volume */}
           <Card className="data-panel">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">
-                24h Volume
-              </h3>
+              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">24h Volume</h3>
               <Activity className="h-4 w-4 text-accent" />
             </div>
             <div className="space-y-1">
@@ -157,46 +144,20 @@ export const TokenStats = () => {
             </div>
           </Card>
 
-          {/* Transactions */}
+          {/* Contract */}
           <Card className="data-panel">
             <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">
-                24h Transactions
-              </h3>
-              <Activity className="h-4 w-4 text-accent" />
-            </div>
-            <div className="space-y-1">
-              <p className="text-2xl font-bold text-neon font-orbitron">
-                {loading ? '...' : formatLargeNumber(tokenData.totalTransactions)}
-              </p>
-              <p className="text-sm text-muted-foreground">Buys + Sells</p>
-            </div>
-          </Card>
-
-          {/* Contract Info */}
-          <Card className="data-panel hover:bg-background/60 transition">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">
-                Contract
-              </h3>
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={copyToClipboard}
-                title="Copy to Clipboard"
-                className="h-6 w-6"
-              >
-                <Copy className="h-4 w-4 text-accent" />
-              </Button>
+              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">Contract</h3>
+              <Copy
+                className="h-4 w-4 text-primary cursor-pointer"
+                onClick={() => copyToClipboard(tokenData.address)}
+              />
             </div>
             <div className="space-y-1">
               <p className="text-sm font-mono text-cyber break-all">
                 {formatAddress(tokenData.address)}
               </p>
-              {copied && (
-                <p className="text-xs text-green-400 font-orbitron">Copied!</p>
-              )}
-              <p className="text-xs text-muted-foreground">Ethereum Network</p>
+              <p className="text-sm text-muted-foreground">Ethereum Network</p>
             </div>
           </Card>
         </div>
@@ -204,3 +165,4 @@ export const TokenStats = () => {
     </div>
   );
 };
+
