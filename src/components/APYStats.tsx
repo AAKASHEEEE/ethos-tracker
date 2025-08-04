@@ -129,7 +129,8 @@ export const APYStats = () => {
                 </div>
               </div>
               <p className="text-xs text-muted-foreground mt-3">
-                Each epoch increases APY by 3% and reduces rewards. More $AIR = more rewards.
+                                Each epoch increases APY by 3% and reduces rewards. More $AIR = more rewards.
+
               </p>
             </div>
           </div>
