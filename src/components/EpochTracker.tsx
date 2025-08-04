@@ -25,26 +25,33 @@ export const EpochTracker = () => {
     timeLeft: { days: 0, hours: 0, minutes: 0, seconds: 0 },
     progressPercentage: 0,
     epochStartTime: new Date(),
-    epochEndTime: new Date()
+    epochEndTime: new Date(),
   });
 
   useEffect(() => {
-    const epoch2StartUTC = Date.UTC(2025, 7, 1, 22, 45); // August is 7 (0-indexed)
-    const epochDurationMs = 3 * 24 * 60 * 60 * 1000;
+    // ⚡ EPOCH SETTINGS
+    const EPOCH_2_START_UTC = Date.UTC(2025, 7, 1, 22, 45); // August = 7 (0-indexed)
+    const EPOCH_DURATION_MS = 3 * 24 * 60 * 60 * 1000;
 
-    const updateTimeLeft = () => {
-      const nowUTC = new Date().getTime();
+    const tick = () => {
+      // Always get current UTC time
+      const nowUTC = new Date().getTime() + new Date().getTimezoneOffset() * 60 * 1000;
 
-      const elapsed = nowUTC - epoch2StartUTC;
-      const epochsPassed = Math.floor(elapsed / epochDurationMs);
+      // Calculate elapsed time since Epoch 2 start
+      const elapsed = nowUTC - EPOCH_2_START_UTC;
+
+      // How many full epochs passed
+      const epochsPassed = Math.floor(elapsed / EPOCH_DURATION_MS);
       const currentEpoch = Math.min(2 + epochsPassed, 11);
 
-      const currentEpochStart = epoch2StartUTC + epochsPassed * epochDurationMs;
-      const currentEpochEnd = currentEpochStart + epochDurationMs;
+      // Current Epoch boundaries
+      const currentEpochStart = EPOCH_2_START_UTC + epochsPassed * EPOCH_DURATION_MS;
+      const currentEpochEnd = currentEpochStart + EPOCH_DURATION_MS;
 
+      // Remaining time in ms
       const remaining = currentEpochEnd - nowUTC;
-
       const clamped = Math.max(0, remaining);
+
       const days = Math.floor(clamped / (1000 * 60 * 60 * 24));
       const hours = Math.floor((clamped % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((clamped % (1000 * 60 * 60)) / (1000 * 60));
@@ -52,7 +59,7 @@ export const EpochTracker = () => {
 
       const progress = Math.min(
         100,
-        ((epochDurationMs - clamped) / epochDurationMs) * 100
+        ((EPOCH_DURATION_MS - clamped) / EPOCH_DURATION_MS) * 100
       );
 
       setEpochData({
@@ -61,17 +68,16 @@ export const EpochTracker = () => {
         timeLeft: { days, hours, minutes, seconds },
         progressPercentage: Math.round(progress),
         epochStartTime: new Date(currentEpochStart),
-        epochEndTime: new Date(currentEpochEnd)
+        epochEndTime: new Date(currentEpochEnd),
       });
     };
 
-    updateTimeLeft();
-    const interval = setInterval(updateTimeLeft, 1000);
-
+    tick();
+    const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  const formatTime = (num: number) => String(num).padStart(2, "0");
+  const fmt = (n: number) => n.toString().padStart(2, "0");
 
   return (
     <div className="eth-window">
@@ -89,7 +95,6 @@ export const EpochTracker = () => {
                 Epoch {epochData.currentEpoch} of {epochData.totalEpochs}
               </h3>
             </div>
-
             <div className="progress-neon h-6">
               <div
                 className="progress-fill flex items-center justify-center text-xs font-bold text-white"
@@ -98,7 +103,6 @@ export const EpochTracker = () => {
                 {epochData.progressPercentage}%
               </div>
             </div>
-
             <p className="text-sm text-muted-foreground">
               Epoch Progress: {epochData.progressPercentage}%
             </p>
@@ -129,7 +133,7 @@ export const EpochTracker = () => {
                   <div key={label} className="text-center">
                     <div className="neon-button p-3">
                       <p className="text-2xl font-bold font-orbitron text-foreground">
-                        {formatTime(value)}
+                        {fmt(value)}
                       </p>
                     </div>
                     <p className="text-xs text-muted-foreground mt-1 font-orbitron">
@@ -163,17 +167,6 @@ export const EpochTracker = () => {
             </p>
           </Card>
         </div>
-
-        <Card className="data-panel">
-          <div className="text-center space-y-2">
-            <h4 className="font-semibold text-green-400 font-orbitron">
-              Next: Epoch {epochData.currentEpoch + 1}
-            </h4>
-            <p className="text-sm text-muted-foreground">
-              Rewards in {epochData.timeLeft.days}d {epochData.timeLeft.hours}h
-            </p>
-          </div>
-        </Card>
       </div>
     </div>
   );
