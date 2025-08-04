@@ -14,31 +14,27 @@ export const DashboardHeader = () => {
   };
 
   return (
-    <div className="retro-window mb-6">
-      <div className="window-titlebar">
-        <div className="window-controls">
-          <div className="window-control control-close"></div>
-          <div className="window-control control-minimize"></div>
-          <div className="window-control control-maximize"></div>
-        </div>
-        <div className="flex items-center gap-2 ml-2">
-          <Monitor className="h-4 w-4 text-black" />
-          <h1 className="font-orbitron font-bold text-sm text-black">Ethereum OS Dashboard - LIVE</h1>
+    <div className="eth-window mb-8">
+      <div className="window-header">
+        <div className="window-indicator" />
+        <div className="flex items-center gap-2">
+          <Monitor className="h-4 w-4 text-foreground" />
+          <h1 className="window-title">ETH OS Dashboard - LIVE</h1>
         </div>
       </div>
       
-      <div className="p-4 bg-gradient-to-r from-secondary to-muted">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-gradient font-orbitron">
-              ${tokenData.symbol} Ecosystem Tracker
+      <div className="p-6 bg-gradient-to-r from-secondary/20 to-muted/20">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent font-orbitron tracking-tight">
+              ETH OS
             </h1>
-            <p className="text-muted-foreground">
-              Real-time DePIN network analytics via GeckoTerminal API
+            <p className="text-lg text-muted-foreground mt-2 font-medium">
+              Decentralized AI Infrastructure Dashboard
             </p>
           </div>
           
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-end gap-4">
             {/* Connection Status */}
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-background/50 border border-border">
               {isOnline ? (
@@ -65,7 +61,7 @@ export const DashboardHeader = () => {
               onClick={handleRefresh}
               variant="outline"
               size="sm"
-              className="btn-cyber"
+              className="neon-button"
             >
               <RefreshCw className="h-4 w-4 mr-2" />
               Refresh
@@ -74,21 +70,21 @@ export const DashboardHeader = () => {
         </div>
         
         {/* Quick Stats Bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-border">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6 pt-6 border-t border-border">
           <div className="text-center">
-            <p className="text-lg font-bold text-neon font-orbitron">ETH</p>
+            <p className="text-lg font-bold text-primary font-orbitron">ETH</p>
             <p className="text-xs text-muted-foreground">Network</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-cyber font-orbitron">Epoch 2</p>
+            <p className="text-lg font-bold text-accent font-orbitron">Epoch 2</p>
             <p className="text-xs text-muted-foreground">Current</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-neon font-orbitron">${tokenData.price.toFixed(6)}</p>
+            <p className="text-lg font-bold text-primary font-orbitron">${tokenData.price.toFixed(6)}</p>
             <p className="text-xs text-muted-foreground">Live Price</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-cyber font-orbitron">{formatNumber(tokenData.volume24h)}</p>
+            <p className="text-lg font-bold text-accent font-orbitron">{formatNumber(tokenData.volume24h)}</p>
             <p className="text-xs text-muted-foreground">24h Volume</p>
           </div>
         </div>

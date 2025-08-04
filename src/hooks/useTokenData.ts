@@ -71,36 +71,47 @@ export const useTokenData = () => {
     }
   }, []);
 
-  const fetchChartData = useCallback(async (timeframe: '1m' | '5m' | '15m' | '1h' | '4h' | '1d' = '1h') => {
+  const fetchChartData = useCallback(async (timeframe: 'minute' | 'hour' | 'day' = 'hour') => {
     try {
+      setLoading(true);
+      console.log('Fetching chart data...');
       const ohlcvData = await geckoTerminalApi.getOHLCVData(timeframe, 100);
-      const formattedChartData = geckoTerminalApi.formatChartData(ohlcvData);
-      setChartData(formattedChartData);
-    } catch (err) {
-      console.error('Error fetching chart data:', err);
-      // Fallback to dummy data if API fails
-      const fallbackData: ChartDataPoint[] = Array.from({ length: 24 }, (_, i) => {
-        const now = Date.now();
-        const timestamp = now - (23 - i) * 60 * 60 * 1000; // Hourly data for 24h
-        const basePrice = tokenData.price;
-        const volatility = 0.1;
-        const price = basePrice * (1 + (Math.random() - 0.5) * volatility);
+      const formattedData = geckoTerminalApi.formatChartData(ohlcvData);
+      
+      if (formattedData.length === 0) {
+        throw new Error('No chart data received');
+      }
+      
+      setChartData(formattedData);
+      console.log('Chart data updated:', formattedData.length, 'data points');
+    } catch (error) {
+      console.error('Error fetching chart data:', error);
+      
+      // Fallback to dummy data
+      const dummyData = Array.from({ length: 24 }, (_, i) => {
+        const basePrice = 0.007136;
+        const variance = (Math.random() - 0.5) * 0.0001;
+        const timestamp = Date.now() - (24 - i) * 60 * 60 * 1000;
         
         return {
           timestamp,
           time: new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
           date: new Date(timestamp).toLocaleDateString(),
-          open: price * 0.99,
-          high: price * 1.02,
-          low: price * 0.98,
-          close: price,
-          volume: Math.random() * 100000,
-          price,
+          open: basePrice + variance * 0.9,
+          high: basePrice + variance * 1.1,
+          low: basePrice + variance * 0.8,
+          close: basePrice + variance,
+          volume: Math.random() * 50000 + 10000,
+          price: basePrice + variance
         };
       });
-      setChartData(fallbackData);
+      
+      setChartData(dummyData);
+      console.log('Using fallback chart data');
+    } finally {
+      setLoading(false);
     }
-  }, [tokenData.price]);
+  }, []);
 
   const refreshData = useCallback(() => {
     fetchTokenData();

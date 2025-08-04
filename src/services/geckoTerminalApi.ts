@@ -119,9 +119,14 @@ class GeckoTerminalService {
     };
   }
 
-  async getOHLCVData(timeframe: '1m' | '5m' | '15m' | '1h' | '4h' | '1d' = '1h', limit = 100): Promise<OHLCVData> {
-    const endpoint = `/networks/${NETWORK}/pools/${POOL_ADDRESS}/ohlcv/${timeframe}?limit=${limit}`;
-    return this.makeRequest<OHLCVData>(endpoint);
+  async getOHLCVData(timeframe: 'minute' | 'hour' | 'day' = 'hour', limit = 100): Promise<OHLCVData> {
+    try {
+      const endpoint = `/networks/${NETWORK}/pools/${POOL_ADDRESS}/ohlcv/${timeframe}?limit=${limit}`;
+      return this.makeRequest<OHLCVData>(endpoint);
+    } catch (error) {
+      console.error('GeckoTerminal API Error:', error);
+      throw error;
+    }
   }
 
   async getPoolsData(addresses: string[]): Promise<{ data: PoolData[] }> {

@@ -21,10 +21,10 @@ const holdersData = [
 
 export const ChartsSection = () => {
   const [activeChart, setActiveChart] = useState('price');
-  const [timeframe, setTimeframe] = useState<'1h' | '4h' | '1d'>('1h');
+  const [timeframe, setTimeframe] = useState<'minute' | 'hour' | 'day'>('hour');
   const { chartData, fetchChartData, tokenData, formatNumber } = useTokenData();
 
-  const handleTimeframeChange = (newTimeframe: '1h' | '4h' | '1d') => {
+  const handleTimeframeChange = (newTimeframe: 'minute' | 'hour' | 'day') => {
     setTimeframe(newTimeframe);
     fetchChartData(newTimeframe);
   };
@@ -88,7 +88,7 @@ export const ChartsSection = () => {
                   <p className="text-sm text-muted-foreground">Real-time $AIR price movements</p>
                 </div>
                 <div className="flex gap-2">
-                  {(['1h', '4h', '1d'] as const).map((tf) => (
+                  {(['minute', 'hour', 'day'] as const).map((tf) => (
                     <Button
                       key={tf}
                       onClick={() => handleTimeframeChange(tf)}
@@ -96,7 +96,7 @@ export const ChartsSection = () => {
                       size="sm"
                       className="font-orbitron"
                     >
-                      {tf}
+                      {tf === 'minute' ? '15m' : tf === 'hour' ? '1h' : '1d'}
                     </Button>
                   ))}
                   <Button onClick={() => fetchChartData(timeframe)} variant="outline" size="sm">
