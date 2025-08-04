@@ -1,53 +1,37 @@
+import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { TrendingUp, TrendingDown, Users, Activity, ExternalLink, Copy } from 'lucide-react';
-import { useTokenData } from '@/hooks/useTokenData';
+import { TrendingUp, TrendingDown, Users, Activity, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const TokenStats = () => {
-  const { tokenData, loading, error, lastUpdate, formatNumber, formatLargeNumber } = useTokenData();
+  const [price, setPrice] = useState(0);
+  const [priceChange24h, setPriceChange24h] = useState(0);
+  const [volume24h, setVolume24h] = useState(0);
+  const [holders, setHolders] = useState(0);
 
-  const formatAddress = (address: string) =>
-    `${address.slice(0, 6)}...${address.slice(-4)}`;
+  const contractAddress = '0x8164B40840418C77A68F6f9EEdB5202b36d8b288';
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
+  useEffect(() => {
+    // Replace with your real API or logic
+    setPrice(0.00725);
+    setPriceChange24h(12.8);
+    setVolume24h(127.35);
+
+    // Get holders from Etherscan
+    const fetchHolders = async () => {
+      const res = await fetch(
+        `https://api.etherscan.io/v2/api?chainid=1&module=token&action=tokenholdercount&contractaddress=${contractAddress}&apikey=YOUR_API_KEY`
+      );
+      const data = await res.json();
+      setHolders(Number(data.result) || 0);
+    };
+    fetchHolders();
+  }, []);
+
+  const copyAddress = () => {
+    navigator.clipboard.writeText(contractAddress);
+    alert('Contract address copied!');
   };
-
-  const openPoolOnGecko = () => {
-    window.open(
-      'https://www.geckoterminal.com/eth/pools/0xd277b8bef27af6c2dc0a8aeddd23a57637892270',
-      '_blank'
-    );
-  };
-
-  if (error) {
-    return (
-      <div className="retro-window">
-        <div className="window-titlebar">
-          <div className="window-controls">
-            <div className="window-control control-close"></div>
-            <div className="window-control control-minimize"></div>
-            <div className="window-control control-maximize"></div>
-          </div>
-          <h2 className="font-orbitron font-bold text-sm text-black ml-2">
-            $AIR Token Stats - Error
-          </h2>
-        </div>
-
-        <div className="p-6">
-          <Card className="data-panel bg-red-500/10 border-red-500/30">
-            <div className="text-center space-y-2">
-              <p className="text-red-400 font-orbitron">Failed to load live data</p>
-              <p className="text-sm text-muted-foreground">{error}</p>
-              <Button onClick={() => window.location.reload()} className="btn-cyber">
-                Retry
-              </Button>
-            </div>
-          </Card>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="retro-window">
@@ -57,112 +41,57 @@ export const TokenStats = () => {
           <div className="window-control control-minimize"></div>
           <div className="window-control control-maximize"></div>
         </div>
-        <h2 className="font-orbitron font-bold text-sm text-black ml-2">
-          ${tokenData.symbol} Token Stats - Live
-        </h2>
+        <h2 className="font-orbitron font-bold text-sm text-black ml-2">$AIR Token Stats</h2>
       </div>
 
       <div className="p-6 space-y-4">
-        {/* LIVE BAR */}
-        <Card className="data-panel bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/30">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-sm font-orbitron text-green-400">LIVE DATA</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-muted-foreground">
-                Updated: {lastUpdate.toLocaleTimeString()}
-              </span>
-              <Button onClick={openPoolOnGecko} variant="outline" size="sm" className="h-6 px-2">
-                <ExternalLink className="h-3 w-3" />
-              </Button>
-            </div>
+        {/* Price */}
+        <Card className="data-panel">
+          <h3 className="text-sm font-medium font-orbitron mb-2">Live Price</h3>
+          <div className="flex items-center gap-2 mb-1">
+            {priceChange24h >= 0 ? (
+              <TrendingUp className="h-4 w-4 text-green-400" />
+            ) : (
+              <TrendingDown className="h-4 w-4 text-red-400" />
+            )}
+            <p className="text-2xl font-bold font-orbitron">${price.toFixed(6)}</p>
           </div>
+          <p className={`text-sm ${priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+            {priceChange24h >= 0 ? '+' : ''}
+            {priceChange24h.toFixed(2)}%
+          </p>
         </Card>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Live Price */}
-          <Card className="data-panel animated-bg">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">Live Price</h3>
-              {tokenData.priceChange24h >= 0 ? (
-                <TrendingUp className="h-4 w-4 text-green-400" />
-              ) : (
-                <TrendingDown className="h-4 w-4 text-red-400" />
-              )}
-            </div>
-            <div className="space-y-1">
-              <p className="text-2xl font-bold text-neon font-orbitron">
-                {loading ? '...' : `$${tokenData.price.toFixed(8)}`}
-              </p>
-              <p className={`text-sm ${tokenData.priceChange24h >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                {loading ? '...' : `${tokenData.priceChange24h >= 0 ? '+' : ''}${tokenData.priceChange24h.toFixed(2)}%`}
-              </p>
-            </div>
-          </Card>
+        {/* Volume */}
+        <Card className="data-panel">
+          <h3 className="text-sm font-medium font-orbitron mb-2">24h Volume</h3>
+          <div className="flex items-center gap-2 mb-1">
+            <Activity className="h-4 w-4 text-accent" />
+            <p className="text-2xl font-bold font-orbitron">${volume24h.toFixed(2)}K</p>
+          </div>
+          <p className="text-sm text-muted-foreground">Trading Volume</p>
+        </Card>
 
-          {/* Market Cap */}
-          <Card className="data-panel">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">Market Cap</h3>
-              <Activity className="h-4 w-4 text-accent" />
-            </div>
-            <div className="space-y-1">
-              <p className="text-2xl font-bold text-cyber font-orbitron">
-                {loading ? '...' : `$${formatNumber(tokenData.marketCap)}`}
-              </p>
-              <p className="text-sm text-muted-foreground">Total Value</p>
-            </div>
-          </Card>
+        {/* Holders */}
+        <Card className="data-panel">
+          <h3 className="text-sm font-medium font-orbitron mb-2">Holders</h3>
+          <div className="flex items-center gap-2 mb-1">
+            <Users className="h-4 w-4 text-accent" />
+            <p className="text-2xl font-bold font-orbitron">{holders.toLocaleString()}</p>
+          </div>
+          <p className="text-sm text-muted-foreground">Unique Wallets</p>
+        </Card>
 
-          {/* Holders */}
-          <Card className="data-panel">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">Holders</h3>
-              <Users className="h-4 w-4 text-accent" />
-            </div>
-            <div className="space-y-1">
-              <p className="text-2xl font-bold text-neon font-orbitron">
-                {loading ? '...' : formatLargeNumber(tokenData.holders)}
-              </p>
-              <p className="text-sm text-muted-foreground">Unique Wallets</p>
-            </div>
-          </Card>
-
-          {/* 24h Volume */}
-          <Card className="data-panel">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">24h Volume</h3>
-              <Activity className="h-4 w-4 text-accent" />
-            </div>
-            <div className="space-y-1">
-              <p className="text-2xl font-bold text-cyber font-orbitron">
-                {loading ? '...' : `$${formatNumber(tokenData.volume24h)}`}
-              </p>
-              <p className="text-sm text-muted-foreground">Trading Volume</p>
-            </div>
-          </Card>
-
-          {/* Contract */}
-          <Card className="data-panel">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-sm font-medium text-muted-foreground font-orbitron">Contract</h3>
-              <Copy
-                className="h-4 w-4 text-primary cursor-pointer"
-                onClick={() => copyToClipboard(tokenData.address)}
-              />
-            </div>
-            <div className="space-y-1">
-              <p className="text-sm font-mono text-cyber break-all">
-                {formatAddress(tokenData.address)}
-              </p>
-              <p className="text-sm text-muted-foreground">Ethereum Network</p>
-            </div>
-          </Card>
-        </div>
+        {/* Contract */}
+        <Card className="data-panel">
+          <h3 className="text-sm font-medium font-orbitron mb-2">Contract</h3>
+          <div className="flex items-center gap-2">
+            <p className="text-sm font-mono break-all">{contractAddress.slice(0, 6)}...{contractAddress.slice(-4)}</p>
+            <Copy className="h-4 w-4 cursor-pointer text-blue-400" onClick={copyAddress} />
+          </div>
+          <p className="text-sm text-muted-foreground">Ethereum Network</p>
+        </Card>
       </div>
     </div>
   );
 };
-
