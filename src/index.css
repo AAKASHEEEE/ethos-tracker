@@ -1,198 +1,199 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Retro-Futuristic DePIN Dashboard Design System */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
 
-@layer base {
-  :root {
-    /* Retro Windows 95/98 theme */
-    --background: 45 15% 85%;
-    --foreground: 0 0% 15%;
-
-    --card: 45 15% 90%;
-    --card-foreground: 0 0% 15%;
-
-    --popover: 45 15% 90%;
-    --popover-foreground: 0 0% 15%;
-
-    --primary: 210 100% 55%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 45 15% 75%;
-    --secondary-foreground: 0 0% 15%;
-
-    --muted: 45 10% 80%;
-    --muted-foreground: 0 0% 40%;
-
-    --accent: 45 25% 70%;
-    --accent-foreground: 0 0% 15%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
-
-    --success: 120 60% 50%;
-    --success-foreground: 0 0% 100%;
-
-    --warning: 45 100% 60%;
-    --warning-foreground: 0 0% 15%;
-
-    --border: 0 0% 60%;
-    --input: 0 0% 100%;
-    --ring: 210 100% 55%;
-
-    --radius: 0px;
-
-    /* Retro Windows colors */
-    --retro-gray: 45 15% 85%;
-    --retro-light-gray: 45 15% 90%;
-    --retro-dark-gray: 45 15% 60%;
-    --retro-blue: 210 100% 55%;
-    --retro-green: 120 60% 50%;
-    --retro-red: 0 84% 60%;
-    
-    /* Gradients */
-    --gradient-window: linear-gradient(90deg, hsl(45 15% 85%), hsl(45 15% 90%));
-    --gradient-titlebar: linear-gradient(90deg, hsl(210 100% 55%), hsl(210 100% 45%));
-    --gradient-button: linear-gradient(180deg, hsl(45 15% 90%), hsl(45 15% 80%));
-    --gradient-panel: linear-gradient(180deg, hsl(45 15% 88%), hsl(45 15% 82%));
-    
-    /* Shadows */
-    --shadow-inset: inset 1px 1px 0 hsl(0 0% 100%), inset -1px -1px 0 hsl(0 0% 50%);
-    --shadow-outset: 1px 1px 0 hsl(0 0% 100%), -1px -1px 0 hsl(0 0% 50%);
-    --shadow-window: 2px 2px 8px hsl(0 0% 0% / 0.3);
-    
-    /* Transitions */
-    --transition-smooth: all 0.1s ease;
-  }
+:root {
+  /* ETH OS Dark Theme */
+  --background: 0 0% 3%;
+  --foreground: 0 0% 98%;
+  --card: 0 0% 6%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 6%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 212 100% 50%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 0 0% 9%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 63%;
+  --accent: 212 100% 50%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 212 100% 50%;
+  --chart-1: 212 100% 50%;
+  --chart-2: 173 58% 39%;
+  --chart-3: 197 37% 24%;
+  --chart-4: 43 74% 66%;
+  --chart-5: 27 87% 67%;
+  --radius: 0.75rem;
+  
+  /* ETH OS Brand Colors */
+  --eth-blue: 212 100% 50%;
+  --eth-cyan: 180 100% 50%;
+  --eth-purple: 270 100% 60%;
+  --eth-green: 120 100% 40%;
+  --neon-glow: 212 100% 50%;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground font-inter;
-    background: hsl(var(--background));
-    background-image: 
-      repeating-linear-gradient(
-        45deg,
-        transparent,
-        transparent 2px,
-        hsl(45 15% 88%) 2px,
-        hsl(45 15% 88%) 4px
-      );
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(ellipse at center, hsl(var(--background)) 0%, hsl(0 0% 1%) 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-@layer components {
-  /* Retro Window Chrome */
-  .retro-window {
-    @apply bg-card border-2 border-border;
-    background: var(--gradient-window);
-    box-shadow: var(--shadow-window);
-    border-style: outset;
-    border-color: hsl(var(--border));
-  }
-  
-  .window-titlebar {
-    @apply p-1 flex items-center gap-2 border-b-2;
-    background: var(--gradient-titlebar);
-    border-bottom-style: inset;
-    border-bottom-color: hsl(var(--border));
-  }
-  
-  .window-controls {
-    @apply flex gap-1;
-  }
-  
-  .window-control {
-    @apply w-4 h-3 border border-foreground/40;
-    background: var(--gradient-button);
-    border-style: outset;
-  }
-  
-  .control-close { @apply bg-red-500; }
-  .control-minimize { @apply bg-yellow-500; }
-  .control-maximize { @apply bg-green-500; }
-
-  /* Retro Effects */
-  .retro-button {
-    @apply border-2 border-border px-3 py-1;
-    background: var(--gradient-button);
-    border-style: outset;
-    transition: var(--transition-smooth);
-  }
-  
-  .retro-button:hover {
-    border-style: inset;
-  }
-  
-  .retro-button:active {
-    border-style: inset;
-    background: var(--gradient-panel);
-  }
-
-  /* Data Panels */
-  .data-panel {
-    @apply bg-card border-2 border-border p-4;
-    background: var(--gradient-panel);
-    border-style: inset;
-    box-shadow: var(--shadow-inset);
-  }
-
-  /* Progress Bars */
-  .progress-retro {
-    @apply bg-muted border-2 border-border;
-    border-style: inset;
-    box-shadow: var(--shadow-inset);
-  }
-  
-  .progress-retro .progress-fill {
-    @apply h-full transition-all duration-1000 ease-out;
-    background: hsl(var(--retro-blue));
-  }
-
-  /* Typography */
-  .text-retro-blue {
-    color: hsl(var(--retro-blue));
-  }
-  
-  .text-retro-green {
-    color: hsl(var(--retro-green));
-  }
-  
-  .text-retro-red {
-    color: hsl(var(--retro-red));
-  }
-
-  /* Charts */
-  .chart-container {
-    @apply bg-card border-2 border-border p-4;
-    background: var(--gradient-panel);
-    border-style: inset;
-    box-shadow: var(--shadow-inset);
-  }
+/* ETH OS Window Styles */
+.eth-window {
+  background: linear-gradient(145deg, hsl(var(--card)), hsl(var(--background)));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  box-shadow: 
+    0 0 20px hsl(var(--neon-glow) / 0.1),
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
 }
 
-@layer utilities {
-  .font-orbitron { font-family: 'Orbitron', monospace; }
-  .font-inter { font-family: 'Inter', sans-serif; }
+.eth-window::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--neon-glow) / 0.5), transparent);
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+.window-header {
+  background: linear-gradient(135deg, hsl(var(--card)), hsl(var(--muted) / 0.5));
+  border-bottom: 1px solid hsl(var(--border));
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-  body {
-    @apply bg-background text-foreground;
-  }
+.window-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 600;
+  font-size: 14px;
+  color: hsl(var(--foreground));
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.window-indicator {
+  width: 8px;
+  height: 8px;
+  background: hsl(var(--neon-glow));
+  border-radius: 50%;
+  box-shadow: 0 0 8px hsl(var(--neon-glow) / 0.6);
+  animation: pulse 2s infinite;
+}
+
+/* Glass Data Panels */
+.data-panel {
+  background: linear-gradient(145deg, hsl(var(--card) / 0.8), hsl(var(--background) / 0.9));
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 2px);
+  padding: 20px;
+  margin: 12px 0;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.data-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, hsl(var(--foreground) / 0.1), transparent);
+}
+
+/* Neon Buttons */
+.neon-button {
+  background: linear-gradient(145deg, hsl(var(--primary) / 0.1), hsl(var(--primary) / 0.05));
+  border: 1px solid hsl(var(--primary) / 0.3);
+  border-radius: calc(var(--radius) - 2px);
+  padding: 12px 20px;
+  color: hsl(var(--primary));
+  font-family: 'Orbitron', monospace;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.neon-button:hover {
+  background: linear-gradient(145deg, hsl(var(--primary) / 0.2), hsl(var(--primary) / 0.1));
+  border-color: hsl(var(--primary) / 0.6);
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.3);
+  transform: translateY(-1px);
+}
+
+.neon-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.neon-button:hover::before {
+  left: 100%;
+}
+
+/* Progress Bars */
+.progress-neon {
+  background: hsl(var(--muted) / 0.3);
+  border: 1px solid hsl(var(--border));
+  border-radius: calc(var(--radius) - 4px);
+  overflow: hidden;
+  position: relative;
+  backdrop-filter: blur(5px);
+}
+
+.progress-fill {
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--eth-cyan)));
+  height: 100%;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.1) 50%, transparent 60%);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }

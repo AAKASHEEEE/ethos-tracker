@@ -36,14 +36,10 @@ export const APYStats = () => {
   const currentAPY = epochsData.find(e => e.isActive)?.apy || baseAPY;
 
   return (
-    <div className="retro-window">
-      <div className="window-titlebar">
-        <div className="window-controls">
-          <div className="window-control control-close"></div>
-          <div className="window-control control-minimize"></div>
-          <div className="window-control control-maximize"></div>
-        </div>
-        <h2 className="font-orbitron font-bold text-sm text-white ml-2">APY Stats</h2>
+    <div className="eth-window">
+      <div className="window-header">
+        <div className="window-indicator" />
+        <h2 className="window-title">APY Progression</h2>
       </div>
       
       <div className="p-6 space-y-6">
