@@ -84,10 +84,10 @@ export const SentimentVoting = () => {
           <button
             onClick={() => handleVote('bullish')}
             disabled={sentiment.userVote === 'bullish'}
-            className={`neon-button flex items-center justify-center gap-3 py-4 ${
+            className={`neon-button-green flex items-center justify-center gap-3 py-4 ${
               sentiment.userVote === 'bullish' 
                 ? 'bg-green-500/20 border-green-500/50 text-green-400' 
-                : 'hover:bg-green-500/10 hover:border-green-500/30'
+                : ''
             }`}
           >
             <TrendingUp className="h-5 w-5" />
@@ -100,10 +100,10 @@ export const SentimentVoting = () => {
           <button
             onClick={() => handleVote('bearish')}
             disabled={sentiment.userVote === 'bearish'}
-            className={`neon-button flex items-center justify-center gap-3 py-4 ${
+            className={`neon-button-red flex items-center justify-center gap-3 py-4 ${
               sentiment.userVote === 'bearish' 
                 ? 'bg-red-500/20 border-red-500/50 text-red-400' 
-                : 'hover:bg-red-500/10 hover:border-red-500/30'
+                : ''
             }`}
           >
             <TrendingDown className="h-5 w-5" />

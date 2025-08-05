@@ -2,7 +2,7 @@ import { DashboardHeader } from "@/components/DashboardHeader";
 import { TokenStats } from "@/components/TokenStats";
 import { EpochTracker } from "@/components/EpochTracker";
 import { APYStats } from "@/components/APYStats";
-import { EtherscanLeaderboard } from "@/components/EtherscanLeaderboard";
+
 import { DexscreenerWidget } from "@/components/DexscreenerWidget";
 import { SentimentVoting } from "@/components/SentimentVoting";
 
@@ -35,13 +35,10 @@ const Index = () => {
           </div>
           
           <div className="space-y-8">
-            <EtherscanLeaderboard />
+            <DexscreenerWidget />
           </div>
         </div>
         
-        <div className="mt-12">
-          <DexscreenerWidget />
-        </div>
         
         <footer className="mt-16 text-center text-sm text-muted-foreground">
           <p className="mb-2">ETH OS Dashboard v3.0.0 • Ethereum Network • Real-time Analytics</p>

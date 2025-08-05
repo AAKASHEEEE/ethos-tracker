@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { TrendingUp, TrendingDown, DollarSign, Activity } from 'lucide-react';
+import { useTokenData } from '@/hooks/useTokenData';
 
 export const DexscreenerWidget = () => {
+  const { tokenData, formatNumber } = useTokenData();
   const [biggestTransactions, setBiggestTransactions] = useState({
     biggestBuy: { amount: 15420.67, usd: 52.34 },
     biggestSell: { amount: 8753.22, usd: 29.78 }
@@ -34,6 +36,46 @@ export const DexscreenerWidget = () => {
       </div>
       
       <div className="p-6 space-y-6">
+        {/* Live Price Chart */}
+        <Card className="data-panel animated-bg">
+          <div className="text-center space-y-4">
+            <div className="flex items-center justify-center gap-2">
+              <Activity className="h-6 w-6 text-neon animate-glow" />
+              <h3 className="text-2xl font-bold text-gradient font-orbitron">Live Price</h3>
+            </div>
+            
+            <div className="space-y-2">
+              <p className="text-5xl font-bold text-neon font-orbitron animate-glow">
+                ${tokenData.price.toFixed(6)}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Current AIR Token Price
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-3 gap-4 mt-6">
+              <div className="text-center">
+                <p className="text-lg font-bold text-cyber font-orbitron">
+                  {tokenData.priceChange24h > 0 ? '+' : ''}{tokenData.priceChange24h.toFixed(2)}%
+                </p>
+                <p className="text-xs text-muted-foreground">24h Change</p>
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-bold text-neon font-orbitron">
+                  ${formatNumber(tokenData.volume24h)}
+                </p>
+                <p className="text-xs text-muted-foreground">24h Volume</p>
+              </div>
+              <div className="text-center">
+                <p className="text-lg font-bold text-primary font-orbitron">
+                  ${formatNumber(tokenData.marketCap)}
+                </p>
+                <p className="text-xs text-muted-foreground">Market Cap</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+
         {/* Transaction Stats */}
         <div className="grid grid-cols-2 gap-4 mb-6">
           <Card className="data-panel">
