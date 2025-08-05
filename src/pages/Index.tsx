@@ -1,5 +1,5 @@
 import { DashboardHeader } from "@/components/DashboardHeader";
-import { TokenStats } from "@/components/TokenStats";
+
 import { EpochTracker } from "@/components/EpochTracker";
 import { APYStats } from "@/components/APYStats";
 
@@ -25,7 +25,6 @@ const Index = () => {
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
           <div className="space-y-8">
-            <TokenStats />
             <APYStats />
           </div>
           
