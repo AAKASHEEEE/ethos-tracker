@@ -1,37 +1,70 @@
-// hooks/useTokenData.ts
 import { useState, useEffect } from 'react';
+import { geckoTerminalApi } from '@/services/geckoTerminalApi';
 
 export function useTokenData() {
-  const [price, setPrice] = useState(0);
-  const [priceChange24h, setPriceChange24h] = useState(0);
-  const [volume24h, setVolume24h] = useState(0);
-  const [holders, setHolders] = useState(0);
+  const [tokenData, setTokenData] = useState({
+    price: 0.00725,
+    priceChange24h: 12.8,
+    volume24h: 127350,
+    marketCap: 0,
+    totalTransactions: 0,
+    symbol: 'AIR',
+    name: 'Ethereum OS',
+    address: '0x8164B40840418C77A68F6f9EEdB5202b36d8b288',
+    decimals: 18,
+    totalSupply: 0,
+  });
+  
+  const [chartData, setChartData] = useState([]);
+  const [lastUpdate, setLastUpdate] = useState(new Date());
 
-  const contractAddress = '0x8164B40840418C77A68F6f9EEdB5202b36d8b288';
+  const formatNumber = (num: number) => {
+    if (num >= 1e9) return `${(num / 1e9).toFixed(2)}B`;
+    if (num >= 1e6) return `${(num / 1e6).toFixed(2)}M`;
+    if (num >= 1e3) return `${(num / 1e3).toFixed(2)}K`;
+    return num.toString();
+  };
+
+  const fetchChartData = async (timeframe: 'minute' | 'hour' | 'day' = 'hour') => {
+    try {
+      const ohlcvData = await geckoTerminalApi.getOHLCVData(timeframe);
+      const formattedData = geckoTerminalApi.formatChartData(ohlcvData);
+      setChartData(formattedData);
+    } catch (error) {
+      console.error('Error fetching chart data:', error);
+    }
+  };
+
+  const refreshData = async () => {
+    try {
+      const { pool, tokens } = await geckoTerminalApi.getPoolData();
+      const formattedData = geckoTerminalApi.formatTokenData(pool, tokens);
+      setTokenData(formattedData);
+      setLastUpdate(new Date());
+      await fetchChartData();
+    } catch (error) {
+      console.error('Error refreshing data:', error);
+    }
+  };
 
   useEffect(() => {
-    // ✅ Replace with your real price feed or API call
-    setPrice(0.00725);
-    setPriceChange24h(12.8);
-    setVolume24h(127.35);
-
-    // ✅ Live Holders from Etherscan
-    const fetchHolders = async () => {
-      const res = await fetch(
-        `https://api.etherscan.io/v2/api?chainid=1&module=token&action=tokenholdercount&contractaddress=${contractAddress}&apikey=YOUR_API_KEY`
-      );
-      const data = await res.json();
-      setHolders(Number(data.result) || 0);
-    };
-
-    fetchHolders();
+    refreshData();
+    const interval = setInterval(refreshData, 30000); // Refresh every 30 seconds
+    return () => clearInterval(interval);
   }, []);
 
   return {
-    price,
-    priceChange24h,
-    volume24h,
-    holders,
-    contractAddress,
+    tokenData,
+    chartData,
+    lastUpdate,
+    refreshData,
+    fetchChartData,
+    formatNumber,
+    // Legacy compatibility
+    price: tokenData.price,
+    priceChange24h: tokenData.priceChange24h,
+    volume24h: tokenData.volume24h,
+    holders: 12823, // Static for now
+    contractAddress: tokenData.address,
   };
 }
